@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>NLP</title>
-</head>
-<body>
-    <h3>NLP Yelp Project</h3>
-    <form method="POST">
-        <input type="text" name='name' placeholder="Name">
-        <input type="text" name='age' placeholder="Age">
-        <button type="submit">press</button>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <div id="business-info">
+        <h3 id="business-name"></h3>
+        <ul>
+            <h6 id="business-price"></h6>
+            <h6 id="business-rating"></h6>
+            <h6 id="business-reviews"></h6>
+        </ul>
+        <p id="business-categories"></p>
+    </div>
+    <div id="star-bar-plot" class="plot col-sm-4"></div>
+    <div id="vader-plot" class="plot col-sm-12"></div>
+    {% for business in data %}
+        <p>{{business.name}}</p>
+        <p>{{business.location.city}}</p>
+    {% endfor %}
+{% endblock %}
