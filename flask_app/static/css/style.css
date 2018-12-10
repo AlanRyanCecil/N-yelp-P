@@ -1,0 +1,47 @@
+.navbar {
+    background-color: #C70A1B !important;
+}
+
+.navbar-brand {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-image {
+    height: 2em;
+}
+input, inpu60:focus {
+    border: 6 !important;
+    box-shadow: none !important;
+}
+
+.input-group-text {
+    background-color: white;
+    border: 0;
+}
+
+.cstm-btn {
+    color: white;
+    border: 0 !important;
+    background-color: #AD0A18 !important;
+}
+
+#business-info {
+}
+b
+#categories {
+    list-style-type: none;
+}
+
+.plot {
+    display: inline-block;
+}
+
+#star-bar-plot {
+    height: 16em;
+    display: inline-block;
+}
+
+#vader-plot {
+    height: 24em;
+}
