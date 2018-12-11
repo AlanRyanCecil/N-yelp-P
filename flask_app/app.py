@@ -46,7 +46,7 @@ def pandas(name):
     data = []
     for i, row in ds.iterrows():
         data.append({x: row[x] for x in row.index})
-    return jsonify(data[:200])
+    return jsonify(data)
 
 
 @app.route('/yelp')

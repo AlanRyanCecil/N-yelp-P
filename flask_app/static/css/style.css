@@ -10,7 +10,7 @@
 .nav-image {
     height: 2em;
 }
-input, inpu60:focus {
+input, input:focus {
     border: 6 !important;
     box-shadow: none !important;
 }
@@ -44,4 +44,12 @@ b
 
 #vader-plot {
     height: 24em;
+}
+
+.vader-score-text {
+    color: #C70A1B;
+}
+
+.vader-btn {
+    height: 2em;
 }
