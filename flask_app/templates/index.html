@@ -22,6 +22,11 @@
             <button class="btn btn-primary next-btn">next page</button>
         </div>
     </div>
+    <div id="star-pie-chart" class="plot col-sm-6 offset-sm-3"></div>
+    <div id="bubble-chart" class="plot col-sm-6 offset-sm-3"></div>
+    <div id="vader-bubble-chart" class="plot col-sm-6 offset-sm-3"></div>
+    <div id="summary-section"></div>
+    <div id="review-section"></div>
     {% for business in data %}
         <p>{{business.name}}</p>
         <p>{{business.location.city}}</p>

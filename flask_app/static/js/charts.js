@@ -2,6 +2,9 @@
 
 let category_elem = document.getElementById('business-categories'),
     star_plot = document.getElementById('star-bar-plot'),
+    pie_chart = document.getElementById('star-pie-chart'),
+    bubble_chart = document.getElementById('bubble-chart'),
+    vader_bubble_chart = document.getElementById('vader-bubble-chart'),
     vader_plot = document.getElementById('vader-plot'),
     review_section = $('#review-section'),
     sum_sect = $('#summary-section'),
@@ -71,7 +74,6 @@ $('.dropdown-item').on('click', function(event) {
         });
 
 
-
         Plotly.newPlot(vader_plot, [{
             x: data.filter(x => x.date.getFullYear() === 2016).map(x => x.date),
             y: data.filter(x => x.date.getFullYear() === 2016).map(x => x.rating),
@@ -83,14 +85,10 @@ $('.dropdown-item').on('click', function(event) {
 });
 
 
-
-
-
 function toTitle(str) {
     return str.split(' ')
         .map(x => x.toLowerCase().replace(/\w/, x => x.toUpperCase())).join(' ');
 }
-
 
 function writeSummary() {
     d3.json('/test').then(function(tokens) {
@@ -147,6 +145,8 @@ $('#review-page-btns').on('click', function(event) {
 
 
 
+draw_pie();
+draw_bubbles();
 
 
 
