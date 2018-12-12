@@ -56,24 +56,27 @@ def pandas(name):
 @app.route(('/tokens/<name>/<star>'))
 def getTokens(name, star):
     ds = df.loc[df['name'] == 'Wicked Spoon'].sort_values('date', ascending=False)
-    text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    if star:
+        text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    else:
+        text = ' '.join(ds['text'][:300])
     summary = re.sub('\n', ' ', summarize(text, word_count=300))
     doc = nlp(summary)
     response = ''
     for tok in doc:
         if tok.pos_ == 'ADJ':
-            response += ' <button class="adj-btn">' + str(tok) + '</button>'
+            response += ' <button class="adj-btn">' + tok.text + '</button>'
         elif tok.pos_ == 'NOUN':
-            response += ' <button class="noun-btn">' + str(tok) + '</button>'
+            response += ' <button class="noun-btn">' + tok.text + '</button>'
         else:
             ws = '' if tok.pos_ == 'PUNCT' else ' '
-            response += ws + str(tok)
+            response += ws + tok.text
     return jsonify({'summary': response.strip()})
 
     data = [{
         'summary': summary,
-        'adj': [str(tok) for tok in doc if tok.pos_ == 'ADJ'],
-        'noun': [str(tok) for tok in doc if tok.pos_ == 'NOUN']
+        'adj': [tok.text for tok in doc if tok.pos_ == 'ADJ'],
+        'noun': [tok.text for tok in doc if tok.pos_ == 'NOUN']
     }]
     return jsonify(data)
 
@@ -82,7 +85,7 @@ def getTokens(name, star):
 def test():
     with open('../cleaned_data/test_response.txt', 'r') as read:
         data = read.read()
-    return jsonify({'text': data})
+    return jsonify({'summary': data})
 
 
 @app.route('/yelp')

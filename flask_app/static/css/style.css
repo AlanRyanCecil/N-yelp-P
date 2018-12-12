@@ -1,3 +1,4 @@
+
 .navbar {
     background-color: #C70A1B !important;
     margin-bottom: 3em;
@@ -56,11 +57,11 @@ b
 }
 
 #summary-section {
-    margin-bottom: 5em;
+    /* margin-bottom: 5em; */
 }
 
 .adj-btn, .noun-btn {
-    background-color: #FFFED0;
+    background-color: #FFFFEC;
     color: #C70A1B;
     margin: 0;
     padding: 0;
@@ -71,4 +72,15 @@ b
 .adj-btn:focus, .noun-btn:focus {
     color: #0B5DAC;
     outline: 0;
+}
+
+#review-page-btns {
+    display: none;
+}
+
+footer {
+    background-color: #EEE;
+    height: 30em;
+    border-top: 2px solid #CCC;
+    margin-top: 4em;
 }

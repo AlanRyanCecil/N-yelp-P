@@ -13,9 +13,17 @@
     <div id="star-bar-plot" class="plot col-sm-6 offset-sm-3"></div>
     <div id="star-pie-chart" class="plot col-sm-6 offset-sm-3"></div>
     <div id="bubble-chart" class="plot col-sm-6 offset-sm-3"></div>
-    <div id="vader-bubble-chart" class="plot col-sm-6 offset-sm-3"></div>
-    <div id="summary-section"></div>
-    <div id="review-section"></div>
+    <div class="row">
+        <div id="summary-section" class="col-sm-6"></div>
+        <div id="review-section" class="col-sm-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6"></div>
+        <div id="review-page-btns" class="btn-group col-sm-2 offset-sm-2">
+            <button class="btn btn-primary prev-btn disabled">last page</button>
+            <button class="btn btn-primary next-btn">next page</button>
+        </div>
+    </div>
     {% for business in data %}
         <p>{{business.name}}</p>
         <p>{{business.location.city}}</p>
