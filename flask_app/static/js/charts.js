@@ -2,6 +2,9 @@
 
 let category_elem = document.getElementById('business-categories'),
     star_plot = document.getElementById('star-bar-plot'),
+    pie_chart = document.getElementById('star-pie-chart'),
+    bubble_chart = document.getElementById('bubble-chart'),
+    vader_bubble_chart = document.getElementById('vader-bubble-chart'),
     vader_plot = document.getElementById('vader-plot'),
     review_section = $('#review-section'),
     bus_name, categories, star_dict;
@@ -22,6 +25,7 @@ $('.dropdown-item').on('click', function(event) {
         $('#business-price').text('Price - ' + data[0].price);
         $('#business-rating').text('Rating - ' + data[0].rating);
         $('#business-reviews').text('Reviews - ' + data[0].review_count);
+
 
         populateReviewSection(data, 'Ten Most Recent Reviews');
 
@@ -71,7 +75,7 @@ $('.dropdown-item').on('click', function(event) {
         {
             title: 'Vader Plot',
             margin: { t: 50 }
-        }
+        },
         );
 
 
@@ -82,8 +86,6 @@ $('.dropdown-item').on('click', function(event) {
         let title = 'Ten Most Recent ' + stars[star - 1] + ' Star Reviews';
         populateReviewSection(star_dict[star], title, star);
     });
-
-
 
 
 
@@ -115,12 +117,8 @@ function populateReviewSection(data, title, star) {
     });
 }
 
-
-
-
-
-
-
+draw_pie();
+draw_bubbles();
 
 
 
