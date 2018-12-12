@@ -5,16 +5,18 @@ let category_elem = document.getElementById('business-categories'),
     vader_plot = document.getElementById('vader-plot'),
     review_section = $('#review-section'),
     sum_sect = $('#summary-section'),
-    bus_name, categories, star_dict;
+    current_business, current_star,
+    data, categories,
+    star_words = ['One', 'Two', 'Three', 'Four', 'Five'];
 
 
 $('.dropdown-item').on('click', function(event) {
-    star_dict = {1: [], 2: [], 3: [], 4: [], 5: []};
-    bus_name = event.target.innerText;
-    console.log(bus_name);
-    d3.json('/data/' + bus_name).then(function(data) {
+    current_business = event.target.innerText;
+    current_star = 0;
+    console.log(current_business);
+    d3.json('/data/' + current_business).then(function(response) {
+        data = response;
         data.forEach(x => x.date = new Date(x.date));
-        data.forEach(x => star_dict[x.stars].push(x));
         console.log(data[0]);
         categories = data[0].categories;
         $('#business-name').text(data[0].name);
@@ -22,11 +24,13 @@ $('.dropdown-item').on('click', function(event) {
         $('#business-rating').text('Rating - ' + data[0].rating);
         $('#business-reviews').text('Reviews - ' + data[0].review_count);
 
-        populateReviewSection(data, 'Most Recent Reviews');
+        writeSummary();
+        populateReviewSection(data, 'Most Recent Reviews', '', 1);
 
-
+        let star_list = [0, 0, 0, 0, 0];
+        data.forEach(x => star_list[x.stars - 1] += 1);
         Plotly.newPlot(star_plot, [{
-            x: Object.entries(star_dict).map(([k, v]) => v.length),
+            x: star_list,
             y: [
                 '&#9733;',
                 '&#9733;&#9733;',
@@ -58,74 +62,21 @@ $('.dropdown-item').on('click', function(event) {
             }
         }
         );
+        star_plot.on('plotly_click', function(event) {
+            current_star = event.points[0].pointIndex + 1;
+            let review_section_title = 'Most Recent ' + star_words[current_star - 1] + ' Star Reviews',
+                reviews = data.filter(x => x.stars === current_star)
+            populateReviewSection(reviews, review_section_title, '', 1);
+            writeSummary();
+        });
 
 
-
-        // Plotly.newPlot(vader_plot,[{
-        //     x: data.map(x => x.stars),
-        //     y: data.map(x => x.vader),
-        //     mode: 'markers',
-        //     type: 'scatter',
-        // }],
-        // {
-        //     title: 'Vader Plot',
-        //     margin: { t: 50 }
-        // }
-        // );
 
         Plotly.newPlot(vader_plot, [{
             x: data.filter(x => x.date.getFullYear() === 2016).map(x => x.date),
             y: data.filter(x => x.date.getFullYear() === 2016).map(x => x.rating),
-            // mode: 'markers',
             type: 'histogram',
         }]);
-
-
-    let stars = ['One', 'Two', 'Three', 'Four', 'Five'];
-    star_plot.on('plotly_click', function(event) {
-        let star = event.points[0].pointIndex + 1,
-            review_section_title = 'Most Recent ' + stars[star - 1] + ' Star Reviews';
-        populateReviewSection(star_dict[star], review_section_title, star);
-
-
-
-
-
-
-        d3.json('/tokens/' + bus_name + '/' + star).then(function(tokens) {
-            sum_sect.empty();
-            sum_sect.append('<h3 class="offset-sm-2">Summary of the 300 most recent ' + stars[star - 1] + ' star reviews</h3>');
-            sum_sect.append('<br>');
-            sum_sect.append('<p class="col-sm-8 offset-sm-2">' + tokens.summary + '</p>')
-
-            $('.adj-btn, .noun-btn').on('click', function(event) {
-                console.log(event.target.innerText);
-            });
-        });
-
-
-    });
-
-
-    d3.json('/test').then(function(summary) {
-        let star = 1;
-        sum_sect.append('<h3 class="offset-sm-2">Summary of the 300 Most Recent ' + stars[star - 1] + ' Star Reviews</h3>');
-        sum_sect.append('<br>');
-        sum_sect.append('<p class="col-sm-8 offset-sm-2">' + summary.text + '</p>')
-        $('.adj-btn, .noun-btn').on('click', function(event) {
-            let word = event.target.innerText;
-            let title = word;
-
-            console.log(word, word, word);
-            let re = new RegExp(word, 'i');
-            let reviews = data.filter(x => x.stars === star).filter(x => x.text.match(re));
-            console.log(reviews[0].text.replace(re, 'fartfartfartfart'));
-            populateReviewSection(reviews, title, star, word);
-        });
-    });
-
-
-
 
 
     });
@@ -135,24 +86,60 @@ $('.dropdown-item').on('click', function(event) {
 
 
 
+function toTitle(str) {
+    return str.split(' ')
+        .map(x => x.toLowerCase().replace(/\w/, x => x.toUpperCase())).join(' ');
+}
 
 
+function writeSummary() {
+    d3.json('/test').then(function(tokens) {
+    // d3.json('/tokens/' + current_business + '/' + current_star).then(function(tokens) {
+        let starword = current_star ? star_words[current_star - 1] + ' Star' : '';
+        sum_sect.empty();
+        sum_sect.append('<h4 class="xoffset-sm-2">Summary of the 300 Most Recent ' + starword + ' Reviews</h4>');
+        sum_sect.append('<br>');
+        sum_sect.append('<p class="xcol-sm-8 xoffset-sm-2">' + tokens.summary + '</p>')
 
-
-function populateReviewSection(data, title, star, keyword) {
-    review_section.empty();
-    review_section.append('<h2 class="offset-sm-2">' + title + '</h2>');
-    review_section.append('<br>');
-    data.slice(0, 5).forEach(function(x) {
-        let vader_score = '<span class="vader-score-text">Vader Score: ' + x.vader + '</span>'
-        let row = $('<div class="row"></div>');
-        row.append('<p class="col-sm-6 offset-sm-2">' + x.text + '<br>' + vader_score + '<p>');
-        // row.append('<p>Vader Score: ' + x.vader + '</p>')
-        row.append('<button class="vader-btn btn btn-sm btn-primary">Analyze</button>');
-        review_section.append(row);
-        review_section.append('<br>')
+        $('.adj-btn, .noun-btn').on('click', function(event) {
+            console.log(data[0].text);
+            let word = event.target.innerText,
+                title = starword + ' Reviews Containing "' + toTitle(word) + '"',
+                re = new RegExp(' ' + word, 'i'),
+                reviews = data.filter(x => x.text.match(re));
+            reviews = current_star ? reviews.filter(x => x.stars === current_star) : reviews;
+            reviews.forEach(x => x.text = x.text.replace(word, '<span class="adj-btn">' + word + '</span>'));
+            populateReviewSection(reviews, title, word, 1);
+        });
     });
 }
+
+
+function populateReviewSection(reviews, title, keyword, page) {
+    page = page * 3;
+    review_section.empty();
+    review_section.append('<h4 class="xoffset-sm-2">' + title + '</h4>');
+    review_section.append('<br>');
+    reviews.slice(page - 3, page).forEach(function(x) {
+        let vader_score = '<span class="vader-score-text">Vader Score: ' + x.vader + '</span>'
+        let row = $('<div class="row"></div>');
+        review_section.append('<p class="xcol-sm-6 xoffset-sm-2">' + x.text + '<br>' + vader_score + '<p>');
+        // row.append('<p>Vader Score: ' + x.vader + '</p>')
+        // row.append('<button class="vader-btn btn btn-sm btn-primary">Analyze</button>');
+        // review_section.append(row);
+        review_section.append('<br>');
+    });
+    $('#review-page-btns').css('display', 'inline-flex');
+}
+
+
+
+
+
+$('#review-page-btns').on('click', function(event) {
+    let page = event.target.innerText === 'next page' ? 5 : -5;
+    console.log(page);
+});
 
 
 
