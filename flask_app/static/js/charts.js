@@ -2,6 +2,9 @@
 
 let category_elem = document.getElementById('business-categories'),
     star_plot = document.getElementById('star-bar-plot'),
+    pie_chart = document.getElementById('star-pie-chart'),
+    bubble_chart = document.getElementById('bubble-chart'),
+    vader_bubble_chart = document.getElementById('vader-bubble-chart'),
     vader_plot = document.getElementById('vader-plot'),
     review_section = $('#review-section'),
     sum_sect = $('#summary-section'),
@@ -23,7 +26,6 @@ $('.dropdown-item').on('click', function(event) {
         $('#business-reviews').text('Reviews - ' + data[0].review_count);
 
         populateReviewSection(data, 'Most Recent Reviews');
-
 
         Plotly.newPlot(star_plot, [{
             x: Object.entries(star_dict).map(([k, v]) => v.length),
@@ -60,7 +62,6 @@ $('.dropdown-item').on('click', function(event) {
         );
 
 
-
         // Plotly.newPlot(vader_plot,[{
         //     x: data.map(x => x.stars),
         //     y: data.map(x => x.vader),
@@ -90,8 +91,6 @@ $('.dropdown-item').on('click', function(event) {
 
 
 
-
-
         d3.json('/tokens/' + bus_name + '/' + star).then(function(tokens) {
             sum_sect.empty();
             sum_sect.append('<h3 class="offset-sm-2">Summary of the 300 most recent ' + stars[star - 1] + ' star reviews</h3>');
@@ -102,7 +101,6 @@ $('.dropdown-item').on('click', function(event) {
                 console.log(event.target.innerText);
             });
         });
-
 
     });
 
@@ -154,12 +152,8 @@ function populateReviewSection(data, title, star, keyword) {
     });
 }
 
-
-
-
-
-
-
+draw_pie();
+draw_bubbles();
 
 
 
