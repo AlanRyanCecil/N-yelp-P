@@ -1,5 +1,6 @@
 .navbar {
     background-color: #C70A1B !important;
+    margin-bottom: 3em;
 }
 
 .navbar-brand {
@@ -52,4 +53,22 @@ b
 
 .vader-btn {
     height: 2em;
+}
+
+#summary-section {
+    margin-bottom: 5em;
+}
+
+.adj-btn, .noun-btn {
+    background-color: #FFFED0;
+    color: #C70A1B;
+    margin: 0;
+    padding: 0;
+    border-radius: 1px;
+    border: 0;
+}
+
+.adj-btn:focus, .noun-btn:focus {
+    color: #0B5DAC;
+    outline: 0;
 }
