@@ -1,0 +1,74 @@
+.navbar {
+    background-color: #C70A1B !important;
+    margin-bottom: 3em;
+}
+
+.navbar-brand {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-image {
+    height: 2em;
+}
+input, input:focus {
+    border: 6 !important;
+    box-shadow: none !important;
+}
+
+.input-group-text {
+    background-color: white;
+    border: 0;
+}
+
+.cstm-btn {
+    color: white;
+    border: 0 !important;
+    background-color: #AD0A18 !important;
+}
+
+#business-info {
+}
+b
+#categories {
+    list-style-type: none;
+}
+
+.plot {
+    display: inline-block;
+}
+
+#star-bar-plot {
+    height: 16em;
+    display: inline-block;
+}
+
+#vader-plot {
+    height: 24em;
+}
+
+.vader-score-text {
+    color: #C70A1B;
+}
+
+.vader-btn {
+    height: 2em;
+}
+
+#summary-section {
+    margin-bottom: 5em;
+}
+
+.adj-btn, .noun-btn {
+    background-color: #FFFED0;
+    color: #C70A1B;
+    margin: 0;
+    padding: 0;
+    border-radius: 1px;
+    border: 0;
+}
+
+.adj-btn:focus, .noun-btn:focus {
+    color: #0B5DAC;
+    outline: 0;
+}
