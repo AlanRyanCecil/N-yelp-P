@@ -3,6 +3,7 @@ import pandas as pd
 import spacy
 import re
 from gensim.summarization import summarize
+from wordcloud import WordCloud
 import requests
 import json
 import os
@@ -55,30 +56,24 @@ def pandas(name):
 
 @app.route(('/tokens/<name>/<star>'))
 def getTokens(name, star):
-    ds = df.loc[df['name'] == 'Wicked Spoon'].sort_values('date', ascending=False)
-    if star:
-        text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
-    else:
+    ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
+    if star == '0':
         text = ' '.join(ds['text'][:300])
-    summary = re.sub('\n', ' ', summarize(text, word_count=300))
+    else:
+        text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    summary = re.sub('\n', ' ', summarize(text[:200000], word_count=300))
     doc = nlp(summary)
     response = ''
     for tok in doc:
         if tok.pos_ == 'ADJ':
-            response += ' <button class="adj-btn">' + tok.text + '</button>'
+            response += ' <span class="adj-btn">' + tok.text + '</span>'
         elif tok.pos_ == 'NOUN':
-            response += ' <button class="noun-btn">' + tok.text + '</button>'
+            response += ' <span class="noun-btn">' + tok.text + '</span>'
         else:
             ws = '' if tok.pos_ == 'PUNCT' else ' '
             response += ws + tok.text
     return jsonify({'summary': response.strip()})
 
-    data = [{
-        'summary': summary,
-        'adj': [tok.text for tok in doc if tok.pos_ == 'ADJ'],
-        'noun': [tok.text for tok in doc if tok.pos_ == 'NOUN']
-    }]
-    return jsonify(data)
 
 
 @app.route('/test')
@@ -86,6 +81,30 @@ def test():
     with open('../cleaned_data/test_response.txt', 'r') as read:
         data = read.read()
     return jsonify({'summary': data})
+
+
+# @app.route('/wordcloud/<name>/<star>')
+# def make_wordcloud(name, star):
+#     ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
+#     if star == '0':
+#         reviews = ' '.join(ds['text'][:300])
+#     else:
+#         reviews = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+#     doc = nlp(reviews)
+#     text = [t.text for t in doc if t.pos_ == 'NOUN']
+#     freq_dict = {}
+#     for word in text:
+#         if re.match("your|person|place|that|thing", word):
+#             continue
+#         val = freq_dict.get(word, 0)
+#         freq_dict[word.lower()] = val + 1
+#     wc = WordCloud(width=600, height=300, background_color="white", max_words=2000)
+#     wc.generate_from_frequencies(freq_dict)
+#     img = BytesIO()
+#     wc.to_image().save(img, 'PNG')
+#     img.seek(0)
+#     return send_file(img, mimetype='image/png')
+
 
 
 @app.route('/yelp')

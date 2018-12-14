@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon"/>
         <link rel="stylesheet" href="static/css/style.css">
@@ -33,7 +34,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     {% for business in businesses %}
-                                        <a class="dropdown-item" href="#">{{ business }}</a>
+                                        <a class="dropdown-item">{{ business }}</a>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -48,15 +49,96 @@
         <div class="container">
             {% block content %}{% endblock %}
         </div>
-        <footer></footer>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Team</h6>
+                            </li>
+                            <li>
+                                <a href="#">Alan Cecil</a>
+                            </li>
+                            <li>
+                                <a href="#">Farhad Omidvar</a>
+                            </li>
+                            <li>
+                                <a href="#">Teasha McCoy</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Languages</h6>
+                            </li>
+                            <li>
+                                <a href="#">Python</a>
+                            </li>
+                            <li>
+                                <a href="#">JavaScript</a>
+                            </li>
+                            <li>
+                                <a href="#">Swift</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Libraries</h6>
+                            </li>
+                            <li>
+                                <a href="#">Pandas</a>
+                            </li>
+                            <li>
+                                <a href="#">spaCy</a>
+                            </li>
+                            <li>
+                                <a href="#">Flask</a>
+                            </li>
+                            <li>
+                                <a href="#">Bootstrap</a>
+                            </li>
+                            <li>
+                                <a href="#">Plotly</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Tools</h6>
+                            </li>
+                            <li>
+                                <a href="#">Tableau</a>
+                            </li>
+                            <li>
+                                <h6 class="yelp-red">Dataset</h6>
+                            </li>
+                            <li>
+                                <a href="#">Yelp data</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script src="static/js/draw_pie.js"></script>
+        <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+        <script src="static/js/plotly_1.42.5.js"></script>
+        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+        <!-- <script src="static/js/draw_pie.js"></script> -->
         <script src="static/js/draw_bubbles.js"></script>
         <script src="static/js/charts.js"></script>
+        <script src="static/js/map.js"></script>
         <!-- <script src="static/js/tableau.js"></script> -->
     </body>
 </html>
