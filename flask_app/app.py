@@ -1,16 +1,16 @@
 from flask import Flask, request, render_template, redirect, jsonify
-import pandas as pd
-import spacy
-import re
 from gensim.summarization import summarize
 from wordcloud import WordCloud
-import matplotlib
-matplotlib.use('PS')
-import requests
-import json
-import os
 from config_yelp import api_key
+import pandas as pd
+import matplotlib
+import requests
+import spacy
+import json
+import re
+import os
 
+matplotlib.use('PS')
 
 app = Flask('alan')
 

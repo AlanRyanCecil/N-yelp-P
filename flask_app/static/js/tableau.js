@@ -5,10 +5,9 @@ var scriptElement = document.createElement('script');
 scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
 vizElement.parentNode.insertBefore(scriptElement, vizElement);
 
-
 $('#dropdownMenuLink').on('click', function() {
     $('#tableaublock').hide('slow');
-    $('#contentblock').show('slow');
+    $('#contentblock').slideDown('slow');
     world.invalidateSize();
 });
 
@@ -16,4 +15,3 @@ $("#totableau").on('click', function() {
     $('#tableaublock').show('slow');
     $('#contentblock').hide('slow');
 })
-

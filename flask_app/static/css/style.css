@@ -9,10 +9,11 @@
 
 .navbar>.container {
     /* padding: 0 8vw 0 8vw; */
+    margin-left: 20vw;
 }
 
 #navbar-toggler {
-    margin-left: 16vw;
+    margin-left: 10vw;
 }
 
 .yelp-red {
@@ -23,20 +24,12 @@
     color: #0B61FF;
 }
 
-.navbar-brand {
-    margin: 0;
-    padding: 0;
-}
-
-.nav-image {
-    /* margin-left: 5em; */
-}
-
 .nav-image {
     height: 2em;
 }
+
 input, input:focus {
-    border: 6 !important;
+    border: 0 !important;
     box-shadow: none !important;
 }
 
@@ -55,13 +48,8 @@ input, input:focus {
     background-color: #AD0A18 !important;
 }
 
-.word-cloud-section {
-    /* display: none; */
-}
-
 .generating {
     display: none;
-    /* position: relative; */
 }
 
 .word-cloud-section>img {
@@ -95,7 +83,6 @@ li {
     display: inline-block;
 }
 
-
 #vader-plot {
     height: 24em;
 }
@@ -116,10 +103,6 @@ li {
 
 .vader-btn {
     height: 2em;
-}
-
-#summary-section {
-    /* margin-bottom: 5em; */
 }
 
 .adj-btn, .noun-btn {
@@ -147,14 +130,22 @@ li {
 }
 
 footer {
-    background-color: #EEE;
-    height: 30em;
+    background-color: #F7F7F7;
+    height: 25em;
     border-top: 2px solid #CCC;
-    padding-top: 2em;
+    padding-top: 1em;
     margin-top: 4em;
+}
+
+.footer-list>li>h6 {
+    margin-top: 1em;
+    margin-bottom: 0.2em;
 }
 
 .footer-list>li>a {
     font-size: 0.8em;
 }
 
+#footer-image {
+    margin-top: 4em;
+}
