@@ -1,7 +1,18 @@
+#contentblock {
+    display: none;
+}
 
 .navbar {
     background-color: #C70A1B !important;
     margin-bottom: 3em;
+}
+
+.navbar>.container {
+    /* padding: 0 8vw 0 8vw; */
+}
+
+#navbar-toggler {
+    margin-left: 16vw;
 }
 
 .yelp-red {
@@ -9,7 +20,7 @@
 }
 
 .yelp-blue {
-    color: 
+    color: #0B61FF;
 }
 
 .navbar-brand {
@@ -34,18 +45,40 @@ input, input:focus {
     border: 0;
 }
 
+.dropdown-menu {
+    z-index: 10000;
+}
+
 .cstm-btn {
     color: white;
     border: 0 !important;
     background-color: #AD0A18 !important;
 }
 
+.word-cloud-section {
+    /* display: none; */
+}
+
+.generating {
+    display: none;
+    /* position: relative; */
+}
+
+.word-cloud-section>img {
+    position: absolute;
+    max-width: 32vw;
+    max-height:16vw;
+    width: auto;
+    height: auto;
+}
+
 #map {
-    /* width: 600px; */
-    height: 20vw;
+    display: none;
+    height: 16vw;
 }
 
 #business-info {
+    padding: 0;
 }
 
 li {
@@ -58,6 +91,7 @@ li {
 
 #star-bar-plot {
     height: 16em;
+    margin-top: 5em;
     display: inline-block;
 }
 
@@ -72,7 +106,6 @@ li {
 }
 
 .sentiment-score {
-    color: #3CA6E9;
     color: #0B61FF;
     
 }

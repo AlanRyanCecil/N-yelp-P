@@ -14,3 +14,14 @@ var world = L.map('map', {
     zoom: 10,
     layers: [streetMap],
 });
+
+var markers = L.layerGroup();
+world.addLayer(markers);
+function setMapLocation(bid) {
+    d3.json('/business/' + bid).then(function(budata) {
+        let latlng = [budata.coordinates.latitude, budata.coordinates.longitude]
+        world.flyTo(latlng, 16);
+        markers.clearLayers();
+        markers.addLayer(L.marker(latlng));
+    });
+}

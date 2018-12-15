@@ -3,7 +3,6 @@
 let category_elem = document.getElementById('business-categories'),
     star_plot = document.getElementById('star-bar-plot'),
     // pie_chart = document.getElementById('star-pie-chart'),
-    // bubble_chart = document.getElementById('bubble-chart'),
     // vader_bubble_chart = document.getElementById('vader-bubble-chart'),
     // vader_plot = document.getElementById('vader-plot'),
     review_section = $('#review-section'),
@@ -24,15 +23,23 @@ $('.dropdown-item').on('click', function(event) {
         data = response;
         data.forEach(x => x.date = new Date(x.date));
         console.log(data[0]);
-        categories = data[0].categories;
+        draw_twoAxis_bubbles(data);
+        setMapLocation(data[0].business_id);
+        categories = data[0].categories
+            .replace(/[^\w]/g, ' ').split(' ').filter(x => x).join(' - ');
+        categories = '<span class="yelp-blue">' + categories + '</span>'
         $('#business-name').text(data[0].name);
-        $('#business-price').text('Price - ' + data[0].price);
-        $('#business-rating').text('Rating - ' + data[0].rating);
-        $('#business-reviews').text('Reviews - ' + data[0].review_count);
+        $('#business-details').html(data[0].price + ' &#8226; ' + categories);
 
-        writeSummary();
+
+        $('#map').show();
+        world.invalidateSize();
         reviews_title = 'Most Recent Reviews';
         populateReviewSection();
+        writeSummary();
+        generateWordcloud();
+
+
 
         let star_list = [0, 0, 0, 0, 0];
         data.forEach(x => star_list[x.stars - 1] += 1);
@@ -52,28 +59,32 @@ $('.dropdown-item').on('click', function(event) {
             marker: {
                 color: '#FFD20E',
             },
-        }],
-        {
+        }], {
+            title: data[0].review_count + ' Total Reviews',
             // title: data[0].name,
             font: {
                 // size: 32,
             },
             xaxis: {
                 showgrid: false,
+                showticklabels: false,
                 font: {
                     size: 3
                 },
             },
             yaxis: {
                 showgrid: false,
-            }
-        }
-        , {displayModeBar: false});
+            },
+            margin: {l: 80, r: 0, b: 80, t: 80, pad: 4},
+        }, {
+            displayModeBar: false,
+        });
 
         star_plot.on('plotly_click', function(event) {
             current_star = event.points[0].pointIndex + 1;
             review_page = 0;
             keyword = null;
+
             reviews_title = 'Most Recent ' + star_words[current_star - 1] + ' Star Reviews';
             populateReviewSection();
             writeSummary();
@@ -201,33 +212,18 @@ function summarySimulator(elem) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function generateWordcloud() {
+    $('.generating').fadeIn(1000, function() {
+        $('.word-cloud').remove();
+    });
+    let rnd = Math.round(Math.random() * 1000000);
+    d3.json('/wordcloud/' + current_business + '/' + 0).then(function(res) {
+        console.log(res);
+    $('.word-cloud-section')
+        .prepend('<img class="word-cloud" src="static/images/wordcloud.png?dummy=' + rnd + '">');
+        $('.generating').fadeOut(1000);
+    });
+}
 
 
 

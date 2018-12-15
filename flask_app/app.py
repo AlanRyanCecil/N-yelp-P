@@ -4,6 +4,8 @@ import spacy
 import re
 from gensim.summarization import summarize
 from wordcloud import WordCloud
+import matplotlib
+matplotlib.use('PS')
 import requests
 import json
 import os
@@ -31,8 +33,13 @@ else:
     #     json.dump(data, outfile)
 
 
+@app.route('/xxx')
+def tableauhome():
+    return render_template('Yelp_Reviews_Story.html', businesses=top_10_businesses)
+
+
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def nlphome():
     if request.method == 'POST':
         form_data = request.form
         city = form_data['city']
@@ -51,6 +58,14 @@ def pandas(name):
     data = []
     for i, row in ds.iterrows():
         data.append({x: row[x] for x in row.index})
+    return jsonify(data)
+
+
+@app.route('/business/<bid>')
+def businessid(bid):
+    with open('static/data/top_21_business_id_data.json', 'r') as file:
+        data = json.load(file)
+    data = [b for b in data if b['id'] == bid][0]
     return jsonify(data)
 
 
@@ -75,7 +90,6 @@ def getTokens(name, star):
     return jsonify({'summary': response.strip()})
 
 
-
 @app.route('/test')
 def test():
     with open('../cleaned_data/test_response.txt', 'r') as read:
@@ -83,28 +97,25 @@ def test():
     return jsonify({'summary': data})
 
 
-# @app.route('/wordcloud/<name>/<star>')
-# def make_wordcloud(name, star):
-#     ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
-#     if star == '0':
-#         reviews = ' '.join(ds['text'][:300])
-#     else:
-#         reviews = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
-#     doc = nlp(reviews)
-#     text = [t.text for t in doc if t.pos_ == 'NOUN']
-#     freq_dict = {}
-#     for word in text:
-#         if re.match("your|person|place|that|thing", word):
-#             continue
-#         val = freq_dict.get(word, 0)
-#         freq_dict[word.lower()] = val + 1
-#     wc = WordCloud(width=600, height=300, background_color="white", max_words=2000)
-#     wc.generate_from_frequencies(freq_dict)
-#     img = BytesIO()
-#     wc.to_image().save(img, 'PNG')
-#     img.seek(0)
-#     return send_file(img, mimetype='image/png')
-
+@app.route('/wordcloud/<name>/<star>')
+def make_wordcloud(name, star):
+    ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
+    if star == '0':
+        reviews = ' '.join(ds['text'][:300])
+    else:
+        reviews = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    doc = nlp(reviews)
+    text = [t.text for t in doc if t.pos_ == 'NOUN']
+    freq_dict = {}
+    for word in text:
+        if re.match("your|person|place|that|thing", word):
+            continue
+        val = freq_dict.get(word, 0)
+        freq_dict[word.lower()] = val + 1
+    wc = WordCloud(width=600, height=300, background_color="white", max_words=2000)
+    wc.generate_from_frequencies(freq_dict)
+    wc.to_file('static/images/wordcloud.png')
+    return jsonify({'success': True})
 
 
 @app.route('/yelp')
