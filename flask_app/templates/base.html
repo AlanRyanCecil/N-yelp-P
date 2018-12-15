@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon"/>
         <link rel="stylesheet" href="static/css/style.css">
@@ -10,13 +11,13 @@
     <body>
         <nav class="navbar navbar-expand-sm navbar-light bg-light navbar-left">
             <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img class="nav-image" src="static/images/yelp_logo.png" alt="">
+                <a class="navbar-brand" href="/">
+                    <img id="totableau" class="nav-image" src="static/images/yelp_logo.png">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse offset-3" id="navbarTogglerDemo02">
+                <div class="collapse navbar-collapse offset-3" id="navbar-toggler">
                     <form class="form-inline my-2 my-lg-0" method="POST">
                         <div class="input-group input-group-sm mb-0">
                             <div class="input-group-prepend">
@@ -33,7 +34,7 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     {% for business in businesses %}
-                                        <a class="dropdown-item" href="#">{{ business }}</a>
+                                        <a class="dropdown-item">{{ business }}</a>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -45,18 +46,102 @@
                 </div>
             </div>
         </nav>
-        <div class="container">
+        <div id="contentblock" class="container">
             {% block content %}{% endblock %}
         </div>
-        <footer></footer>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <div id="tableaublock" class="container">
+            {% block tableau %}{% endblock %}
+        </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Team</h6>
+                            </li>
+                            <li>
+                                <a href="http://alanryancecil.com" target="_blank">Alan Cecil</a>
+                            </li>
+                            <li>
+                                <a href="http://farhadomidvar.com" target="_blank">Farhad Omidvar</a>
+                            </li>
+                            <li>
+                                <a href="https://www.teashamccoy.com" target="_blank">Teasha McCoy</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Languages</h6>
+                            </li>
+                            <li>
+                                <a href="https://www.python.org" target="_blank">Python</a>
+                            </li>
+                            <li>
+                                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">JavaScript</a>
+                            </li>
+                            <li>
+                                <a href="https://swift.org" target="_blank">Swift</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Libraries</h6>
+                            </li>
+                            <li>
+                                <a href="https://pandas.pydata.org" target="_blank">Pandas</a>
+                            </li>
+                            <li>
+                                <a href="https://radimrehurek.com/gensim" target="_blank">Gensim</a>
+                            </li>
+                            <li>
+                                <a href="https://spacy.io" target="_blank">spaCy</a>
+                            </li>
+                            <li>
+                                <a href="https://plot.ly/javascript" target="_blank">Plotly</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="footer-list">
+                            <li>
+                                <h6 class="yelp-red">Tools</h6>
+                            </li>
+                            <li>
+                                <a href="https://www.tableau.com" target="_blank">Tableau</a>
+                            </li>
+                            <li>
+                                <a href="http://flask.pocoo.org" target="_blank">Flask</a>
+                            </li>
+                            <li>
+                                <h6 class="yelp-red">Data</h6>
+                            </li>
+                            <li>
+                                <a href="https://www.yelp.com/dataset" target="_blank">Yelp Dataset</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <img id="footer-image" class="col-sm-7 offset-sm-2" src="static/images/footerimage.png" alt="">
+            </div>
+        </footer>
+        <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script src="static/js/draw_pie.js"></script>
-        <script src="static/js/draw_bubbles.js"></script>
+        <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+        <script src="static/js/plotly_1.42.5.js"></script>
+        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+        <script src="static/js/draw_twoAxis_bubbles.js"></script>
+        <script src="static/js/map.js"></script>
         <script src="static/js/charts.js"></script>
-        <!-- <script src="static/js/tableau.js"></script> -->
+        <script src="static/js/tableau.js"></script>
     </body>
 </html>

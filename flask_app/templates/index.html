@@ -1,31 +1,59 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div id="business-info">
-        <h3 id="business-name"></h3>
-        <ul>
-            <h6 id="business-price"></h6>
-            <h6 id="business-rating"></h6>
-            <h6 id="business-reviews"></h6>
-        </ul>
-        <p id="business-categories"></p>
-    </div>
-    <div id="vader-plot" class="plot col-sm-12"></div>
-    <div id="star-bar-plot" class="plot col-sm-6 offset-sm-3"></div>
-    <div id="star-pie-chart" class="plot col-sm-6 offset-sm-3"></div>
-    <div id="bubble-chart" class="plot col-sm-6 offset-sm-3"></div>
     <div class="row">
+        <div id="business-info" class="col-sm-6">
+            <h3 id="business-name"></h3>
+            <p id="business-details"></p>
+        </div>
+        <!-- <p class="col-sm-6">(word cloud based on most recent reviews)</p> -->
+    </div>
+        <div class="row">
+            <div id="map" class="col-sm-5"></div>
+            <div class="word-cloud-section offset-sm-2">
+                <img class="generating" src="static/images/generatingwordcloud.png">
+            </div>
+        </div>
+    <div class="row">
+        <div id="bubble-chart" class="plot col-sm-12"></div>
+        <div id="star-bar-plot" class="plot col-sm-6 offset-sm-3"></div>
+        <a id="review-top"></a>
         <div id="summary-section" class="col-sm-6"></div>
         <div id="review-section" class="col-sm-6"></div>
     </div>
     <div class="row">
         <div class="col-sm-6"></div>
         <div id="review-page-btns" class="btn-group col-sm-2 offset-sm-2">
-            <button class="btn btn-primary prev-btn disabled">last page</button>
-            <button class="btn btn-primary next-btn">next page</button>
+            <a href="#review-top" class="btn btn-primary last-btn disabled">last page</a>
+            <a href="#review-top" class="btn btn-primary next-btn">next page</a>
         </div>
     </div>
     {% for business in data %}
         <p>{{business.name}}</p>
         <p>{{business.location.city}}</p>
     {% endfor %}
+{% endblock %}
+
+
+{% block tableau %}
+<div class='tableauPlaceholder' id='viz1544768069447' style='position: relative'>
+    <noscript>
+        <a href='#'>
+            <img alt=' ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ye&#47;YelpReviewes&#47;Story1&#47;1_rss.png' style='border: none' />
+        </a>
+    </noscript>
+    <object class='tableauViz'  style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+        <param name='embed_code_version' value='3' /> 
+        <param name='site_root' value='' />
+        <param name='name' value='YelpReviewes&#47;Story1' />
+        <param name='tabs' value='no' /><param name='toolbar' value='yes' />
+        <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ye&#47;YelpReviewes&#47;Story1&#47;1.png' /> 
+        <param name='animate_transition' value='yes' />
+        <param name='display_static_image' value='yes' />
+        <param name='display_spinner' value='yes' />
+        <param name='display_overlay' value='yes' />
+        <param name='display_count' value='yes' />
+        <param name='filter' value='publish=yes' />
+    </object>
+</div>
 {% endblock %}

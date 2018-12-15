@@ -1,13 +1,16 @@
 from flask import Flask, request, render_template, redirect, jsonify
-import pandas as pd
-import spacy
-import re
 from gensim.summarization import summarize
-import requests
-import json
-import os
+from wordcloud import WordCloud
 from config_yelp import api_key
+import pandas as pd
+import matplotlib
+import requests
+import spacy
+import json
+import re
+import os
 
+matplotlib.use('PS')
 
 app = Flask('alan')
 
@@ -30,8 +33,13 @@ else:
     #     json.dump(data, outfile)
 
 
+@app.route('/xxx')
+def tableauhome():
+    return render_template('Yelp_Reviews_Story.html', businesses=top_10_businesses)
+
+
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def nlphome():
     if request.method == 'POST':
         form_data = request.form
         city = form_data['city']
@@ -53,32 +61,33 @@ def pandas(name):
     return jsonify(data)
 
 
+@app.route('/business/<bid>')
+def businessid(bid):
+    with open('static/data/top_21_business_id_data.json', 'r') as file:
+        data = json.load(file)
+    data = [b for b in data if b['id'] == bid][0]
+    return jsonify(data)
+
+
 @app.route(('/tokens/<name>/<star>'))
 def getTokens(name, star):
-    ds = df.loc[df['name'] == 'Wicked Spoon'].sort_values('date', ascending=False)
-    if star:
-        text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
-    else:
+    ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
+    if star == '0':
         text = ' '.join(ds['text'][:300])
-    summary = re.sub('\n', ' ', summarize(text, word_count=300))
+    else:
+        text = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    summary = re.sub('\n', ' ', summarize(text[:200000], word_count=300))
     doc = nlp(summary)
     response = ''
     for tok in doc:
         if tok.pos_ == 'ADJ':
-            response += ' <button class="adj-btn">' + tok.text + '</button>'
+            response += ' <span class="adj-btn">' + tok.text + '</span>'
         elif tok.pos_ == 'NOUN':
-            response += ' <button class="noun-btn">' + tok.text + '</button>'
+            response += ' <span class="noun-btn">' + tok.text + '</span>'
         else:
             ws = '' if tok.pos_ == 'PUNCT' else ' '
             response += ws + tok.text
     return jsonify({'summary': response.strip()})
-
-    data = [{
-        'summary': summary,
-        'adj': [tok.text for tok in doc if tok.pos_ == 'ADJ'],
-        'noun': [tok.text for tok in doc if tok.pos_ == 'NOUN']
-    }]
-    return jsonify(data)
 
 
 @app.route('/test')
@@ -86,6 +95,27 @@ def test():
     with open('../cleaned_data/test_response.txt', 'r') as read:
         data = read.read()
     return jsonify({'summary': data})
+
+
+@app.route('/wordcloud/<name>/<star>')
+def make_wordcloud(name, star):
+    ds = df.loc[df['name'] == name].sort_values('date', ascending=False)
+    if star == '0':
+        reviews = ' '.join(ds['text'][:300])
+    else:
+        reviews = ' '.join(ds.loc[ds['stars'] == int(star), 'text'][:300])
+    doc = nlp(reviews)
+    text = [t.text for t in doc if t.pos_ == 'NOUN']
+    freq_dict = {}
+    for word in text:
+        if re.match("your|person|place|that|thing", word):
+            continue
+        val = freq_dict.get(word, 0)
+        freq_dict[word.lower()] = val + 1
+    wc = WordCloud(width=600, height=300, background_color="white", max_words=2000)
+    wc.generate_from_frequencies(freq_dict)
+    wc.to_file('static/images/wordcloud.png')
+    return jsonify({'success': True})
 
 
 @app.route('/yelp')
